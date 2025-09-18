@@ -1,5 +1,6 @@
 # Example .gitignore content
 /node_modules/
+node_modules/
 *.log
 .env
 build/
