@@ -1,12 +1,18 @@
-import http from "http";
-import { add, multiply } from "./utils";
-import mathUtils from "./utils";
+import { createServer } from "./server";
 
-export const greet = (name: string): string => {
-  return `Hello, ${name}!`;
-};
+const server = createServer();
 
-console.log(greet("Raj"));
-console.log("2 + 3 =", add(2, 3));
-console.log("4 * 5 =", multiply(4, 5));
-console.log("Math utils:", mathUtils.add(10, 20));
+server.start().catch(console.error);
+
+// Graceful shutdown
+process.on("SIGTERM", async () => {
+  console.log("SIGTERM received, shutting down gracefully");
+  await server.stop();
+  process.exit(0);
+});
+
+process.on("SIGINT", async () => {
+  console.log("SIGINT received, shutting down gracefully");
+  await server.stop();
+  process.exit(0);
+});
